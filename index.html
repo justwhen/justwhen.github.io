@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Justin Nguyen | Immunology & Data Science</title>
+  <meta name="description" content="Justin Nguyen, Ph.D. student at UTMB working at the intersection of immunology, vaccine research, and data science.">
+  <meta name="color-scheme" content="dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=24">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top">Justin Nguyen</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#research">Research</a>
+        <a href="#experience">Experience</a>
+        <a href="#publications">Publications</a>
+        <a href="#honors">Honors</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <nav class="profiles" aria-label="Profiles">
+        <a href="https://orcid.org/0009-0009-0448-7016" target="_blank" rel="noopener" aria-label="ORCID" title="ORCID">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="12" y="15.6" text-anchor="middle" font-size="9.5" font-weight="700" font-family="Inter, sans-serif" fill="currentColor">iD</text></svg>
+        </a>
+        <a href="https://github.com/justwhen" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7 4 12l5 5M15 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/justin-nguyen-982030175/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="12" y="16.2" text-anchor="middle" font-size="9.5" font-weight="700" font-family="Inter, sans-serif" fill="currentColor">in</text></svg>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ───────────────────────── HERO ───────────────────────── -->
+    <section class="hero wrap">
+      <div class="hero-text">
+        <p class="eyebrow">Immunology <span>/</span> Vaccines <span>/</span> Data science</p>
+        <h1><span class="iam" aria-hidden="true">I am…</span>Justin Nguyen.</h1>
+        <!-- role phrases cycle via assets/js/typewriter.js (edit the list there) -->
+        <p class="roles">
+          <span class="sr-only">Immunologist, Ph.D. student at UTMB, vaccine researcher, NIH/NLM trainee.</span>
+          <span class="typed" id="typed" aria-hidden="true">an immunologist</span><span class="caret" aria-hidden="true"></span>
+        </p>
+        <p class="lede">
+          I study immune responses to vaccines and viral infection using computational pipelines.
+          My work combines single-cell multi-omics, machine learning, and clinical electronic health
+          data with a bench background in immunology to uncover new insights into immunity.
+        </p>
+        <div class="hero-actions">
+          <!-- TODO: export your CV to PDF and save it at assets/Justin_Nguyen_CV.pdf -->
+          <a class="btn" href="assets/Justin_Nguyen_CV.pdf" target="_blank" rel="noopener">Download CV <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
+
+      <figure class="hero-art" aria-hidden="true">
+        <div class="ascii-stack">
+          <pre id="jelly-body" class="ascii ascii-body"></pre>
+          <pre id="jelly-glow" class="ascii ascii-glow"></pre>
+          <pre id="jelly-gold" class="ascii ascii-gold"></pre>
+        </div>
+        <figcaption class="ascii-caption">fig. 0: lantern jelly, heading 028°</figcaption>
+      </figure>
+    </section>
+
+    <!-- ───────────────────────── THE TANK (interactive map) ───────────────────────── -->
+    <section id="tank-section" class="section wrap tank-section">
+      <div class="tank-intro">
+        <header class="section-head"><span class="num">00</span><h2>The tank</h2></header>
+        <p class="tank-lede">Explore the tank.</p>
+      </div>
+
+      <figure class="tank" aria-label="Interactive aquarium: each element links to a section of the page">
+        <div id="tank"></div>
+      </figure>
+
+      <!-- legend doubles as navigation (and is the main menu on small screens) -->
+      <ol class="tank-legend">
+        <li><a href="#research" data-key="research"><span class="k">01</span>Research <em>the stones</em></a></li>
+        <li><a href="#experience" data-key="experience"><span class="k">02</span>Experience <em>the driftwood</em></a></li>
+        <li><a href="#education" data-key="education"><span class="k">03</span>Education <em>the moss balls</em></a></li>
+        <li><a href="#publications" data-key="publications"><span class="k">04</span>Publications <em>the stem plants</em></a></li>
+        <li><a href="#honors" data-key="honors"><span class="k">05</span>Honors <em>the red plants</em></a></li>
+        <li><a href="#skills" data-key="skills"><span class="k">06</span>Skills <em>the hairgrass</em></a></li>
+      </ol>
+    </section>
+
+    <!-- ───────────────────────── 01 RESEARCH ───────────────────────── -->
+    <section id="research" class="section wrap">
+      <header class="section-head"><span class="num">01</span><h2>Research <em>&amp; interests</em></h2></header>
+      <div class="cards specimens">
+        <article class="card">
+          <p class="cat"><span>No. 01·A</span><span>Galveston, TX</span></p>
+          <h3>Research focus</h3>
+          <p>Vaccine correlates of protection. I'm building a scalable single-cell multi-omics
+          pipeline, validated in NHP vaccination models, to move toward human-relevant
+          immune correlates of vaccine efficacy.</p>
+          <p class="scale" aria-hidden="true"><i></i>0 — 1 cell</p>
+        </article>
+        <article class="card">
+          <p class="cat"><span>No. 01·B</span><span>in silico</span></p>
+          <h3>Computational approach</h3>
+          <p>Machine learning and biostatistics on high-dimensional biological and clinical data,
+          from single-cell transcriptomics to electronic health records, propensity score
+          matching, and post-vaccination outcome prediction.</p>
+          <p class="scale" aria-hidden="true"><i></i>0 — 10⁶ records</p>
+        </article>
+        <article class="card">
+          <p class="cat"><span>No. 01·C</span><span>San Antonio, TX</span></p>
+          <h3>Immunology roots</h3>
+          <p>Mucosal immunity and host–pathogen interaction: lymphotoxin β-receptor signaling and
+          IFN-γ–driven intestinal pathology in <em>Campylobacter</em>-induced colitis.</p>
+          <p class="scale" aria-hidden="true"><i></i>0 — 1 mm</p>
+        </article>
+        <article class="card">
+          <p class="cat"><span>No. 01·D</span><span>EHR cohorts</span></p>
+          <h3>Clinical real-world data</h3>
+          <p>Using EHR cohorts to ask epidemiological questions, like the relative risk of
+          sudden sensorineural hearing loss after infectious disease, or reactions after
+          yellow fever vaccination.</p>
+          <p class="scale" aria-hidden="true"><i></i>0 — 10⁶ patients</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── 02 EXPERIENCE ───────────────────────── -->
+    <section id="experience" class="section wrap">
+      <header class="section-head"><span class="num">02</span><h2>Experience</h2></header>
+      <ol class="timeline">
+        <li>
+          <p class="when">2023 – Present</p>
+          <div>
+            <h3>Ph.D. Researcher, Golovko Lab</h3>
+            <p class="where">University of Texas Medical Branch · Galveston, TX</p>
+            <p class="desc">Single-cell multi-omics pipelines for vaccine correlates in NHP models; machine
+            learning on electronic health records; NIH/NLM T15 trainee in Biomedical Informatics &amp; Data Science.</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">2022 – 2023</p>
+          <div>
+            <h3>Graduate Student Researcher, Tumanov Lab</h3>
+            <p class="where">UT Health Science Center at San Antonio · San Antonio, TX</p>
+            <p class="desc">Explored immune mechanisms controlling <em>Campylobacter</em>-induced intestinal pathology
+            using flow cytometry, RT-PCR, and histological analysis in mouse models.</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">2019 – 2021</p>
+          <div>
+            <h3>Lab Assistant</h3>
+            <p class="where">University of Texas at Austin · Austin, TX</p>
+            <p class="desc">Column chromatography and bacterial culture maintenance; kept lab workflow running.</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">Summer 2020</p>
+          <div>
+            <h3>Summer Intern</h3>
+            <p class="where">U.S. Army Institute of Surgical Research · ORISE · San Antonio, TX</p>
+            <p class="desc">Led literature research on radiation injuries, presented a research poster, and helped
+            write a review on endothelial senescence. Mentor: Dr. Luciana Torres.</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">Summer 2017</p>
+          <div>
+            <h3>Summer Intern</h3>
+            <p class="where">U.S. Army Institute of Surgical Research · ORISE · San Antonio, TX</p>
+            <p class="desc">Optimized fluorescent immunohistochemistry protocols and processed slides to assess
+            cellular recovery after burn injury.</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ───────────────────────── 03 EDUCATION ───────────────────────── -->
+    <section id="education" class="section wrap">
+      <header class="section-head"><span class="num">03</span><h2>Education</h2></header>
+      <ol class="timeline">
+        <li>
+          <p class="when">2023 – 2027 (exp.)</p>
+          <div>
+            <h3>Ph.D., Biochemistry, Cellular &amp; Molecular Biology</h3>
+            <p class="where">University of Texas Medical Branch</p>
+            <p class="desc">Advisor: Dr. Georgiy Golovko</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">2021 – 2023</p>
+          <div>
+            <h3>M.S., Immunology &amp; Infection</h3>
+            <p class="where">UT Health Science Center at San Antonio</p>
+            <p class="desc">Thesis: “Role of Lymphotoxin β-Receptor Signaling in Interferon-γ Driven Intestinal
+            Pathology in <em>Campylobacter</em> Induced Colitis” · Advisor: Dr. Alexei Tumanov</p>
+          </div>
+        </li>
+        <li>
+          <p class="when">2017 – 2021</p>
+          <div>
+            <h3>B.S.A., Biochemistry</h3>
+            <p class="where">The University of Texas at Austin</p>
+            <p class="desc">Minors in Business and Japanese</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ───────────────────────── 04 PUBLICATIONS ───────────────────────── -->
+    <section id="publications" class="section wrap">
+      <header class="section-head"><span class="num">04</span><h2>Publications <em>&amp; presentations</em></h2></header>
+
+      <h3 class="subhead">Publications</h3>
+      <ol class="timeline pubs">
+        <li>
+          <p class="when">2025</p>
+          <div>
+            <h3>Tofacitinib ameliorates <em>Campylobacter</em>-induced intestinal pathology by suppressing IFNγ producing ILCs and T cells</h3>
+            <p class="where">Korchagina A.A., Shein S.A., Muraoka W.T., <strong>Nguyen J.</strong>, Chen Q., Tumanova A.A., Todd A.W., Rivera C., Casali P., Koroleva E., Tumanov A.V. · <em>Mucosal Immunology</em></p>
+            <a class="link" href="https://doi.org/10.1016/j.mucimm.2025.06.010" target="_blank" rel="noopener">DOI ↗</a>
+          </div>
+        </li>
+        <li>
+          <p class="when">2025</p>
+          <div>
+            <h3>EHRchitect: An open-source software tool for medical event sequences data extraction from Electronic Health Records</h3>
+            <p class="where">Botnar K., <strong>Nguyen J.T.</strong>, Farnsworth M., Golovko G., Khanipov K. · <em>Journal of Clinical and Translational Science</em></p>
+            <a class="link" href="https://doi.org/10.1017/cts.2025.55" target="_blank" rel="noopener">DOI ↗</a>
+          </div>
+        </li>
+        <li>
+          <p class="when">2025</p>
+          <div>
+            <h3>Machine learning prediction models for yellow fever post-vaccination reaction study with electronic health records</h3>
+            <p class="where">Farnsworth M.G., Botnar K., <strong>Nguyen J.T.</strong>, Watson R.K., Murphy T.L., McLellan S.L.F., Khanipov K., Golovko G. · <em>Journal of Clinical and Translational Science</em></p>
+            <a class="link" href="https://doi.org/10.1017/cts.2026.10754" target="_blank" rel="noopener">DOI ↗</a>
+          </div>
+        </li>
+        <li>
+          <p class="when">In prep.</p>
+          <div>
+            <h3>The endothelial glycocalyx: Target or mediator of radiation-induced endothelial dysfunction?</h3>
+            <p class="where">Becerra S., <strong>Nguyen J.T.</strong>, Nguyen N.X., Ryan K., Torres L.</p>
+          </div>
+        </li>
+      </ol>
+
+      <h3 class="subhead">Selected presentations</h3>
+      <ul class="talks">
+        <li><span class="when">Oct 2025</span><span><strong>Toward human-relevant vaccine correlates:</strong> a scalable single-cell multi-omics pipeline validated in NHP vaccination models · UTMB Research Day, 34th Keck Annual Research Conference <span class="tag">Poster</span></span></li>
+        <li><span class="when">Aug 2025</span><span><strong>Establishing a workflow for air metagenomics sequencing</strong> to identify emerging aerosolized biological threats · Military Health System Research Symposium <span class="tag">Poster</span></span></li>
+        <li><span class="when">Apr 2025</span><span><strong>Relative risk of sudden sensorineural hearing loss</strong> after diagnosis with infectious disease · McLaughlin Symposium; National Student Research Forum; UTMB Public Health Symposium <span class="tag">Poster</span></span></li>
+        <li><span class="when">Sep 2024</span><span><strong>Evaluation of machine learning models for propensity score matching</strong> in clinical real-world data · TACC Symposium for Texas Researchers; AI in Healthcare <span class="tag">Oral + Poster</span></span></li>
+        <li><span class="when">2023</span><span><strong>Lymphotoxin β receptor-dependent control</strong> of <em>Campylobacter jejuni</em>-induced intestinal immunopathology · Conklyn Mini-Symposium; Vaccine Development Center of San Antonio Conference <span class="tag">Oral</span></span></li>
+      </ul>
+    </section>
+
+    <!-- ───────────────────────── 05 HONORS ───────────────────────── -->
+    <section id="honors" class="section wrap">
+      <header class="section-head"><span class="num">05</span><h2>Honors <em>&amp; scholarships</em></h2></header>
+      <ul class="spec-tags">
+        <li class="spec-tag" style="--r:-2deg"><span class="when">2026 – Present</span><span>Harold T. Sanders Endowed Fellowship in Vaccine Development</span></li>
+        <li class="spec-tag" style="--r:1.5deg"><span class="when">2026</span><span>Eleanor Dupree Otis Biostatistics Award</span></li>
+        <li class="spec-tag" style="--r:-1deg"><span class="when">2025</span><span>The Arthur V. Simmang Scholarship</span></li>
+        <li class="spec-tag" style="--r:2deg"><span class="when">2024 – Present</span><span>NIH/NLM Training Program in Biomedical Informatics &amp; Data Science (T15)</span></li>
+        <li class="spec-tag" style="--r:-1.5deg"><span class="when">2024</span><span>The Satish Srivastava Endowed Scholarship</span></li>
+        <li class="spec-tag" style="--r:1deg"><span class="when">2022</span><span>Congressman Henry Bonilla Health Professions Scholarship</span></li>
+        <li class="spec-tag" style="--r:-2deg"><span class="when">2022</span><span>UTHSCSA Endowed Student Scholarship</span></li>
+        <li class="spec-tag" style="--r:1.5deg"><span class="when">2019</span><span>J.M. and Vola Mae Odom Scholarship, UT Austin</span></li>
+        <li class="spec-tag" style="--r:-1deg"><span class="when">2017 – 2022</span><span>UT Award University Tuition Grant</span></li>
+        <li class="spec-tag" style="--r:2deg"><span class="when">2017</span><span>President’s Horizon Scholarship</span></li>
+      </ul>
+    </section>
+
+    <!-- ───────────────────────── 06 SKILLS ───────────────────────── -->
+    <section id="skills" class="section wrap">
+      <header class="section-head"><span class="num">06</span><h2>Methods <em>&amp; technical skills</em></h2></header>
+      <div class="skills">
+        <div>
+          <h3>Immunology &amp; wet lab</h3>
+          <p>Flow cytometry · RT-PCR · Histology &amp; fluorescent IHC · Mouse infection models · Bacterial culture · Column chromatography</p>
+        </div>
+        <div>
+          <h3>Data &amp; statistics</h3>
+          <!-- TODO: confirm languages / tools -->
+          <p>Single-cell multi-omics · Machine learning · Propensity score matching · Biostatistics · EHR / real-world data</p>
+        </div>
+        <div>
+          <h3>Service</h3>
+          <p>800+ volunteer hours: American Red Cross &amp; Brooke Army Medical Center (pharmacy, child psychology ward, infrastructure), 2017–2020</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── CONTACT ───────────────────────── -->
+    <section id="contact" class="contact wrap">
+      <div>
+        <h2>Let’s talk science.</h2>
+        <p>For research conversations, collaboration, and opportunities.</p>
+      </div>
+      <a class="email" href="mailto:justtngu@utmb.edu">justtngu@utmb.edu <span aria-hidden="true">↗</span></a>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <p>© <span id="year">2026</span> Justin Nguyen</p>
+    <nav class="social" aria-label="Profiles">
+      <a href="https://orcid.org/0009-0009-0448-7016" target="_blank" rel="noopener">ORCID ↗</a>
+      <a href="https://github.com/justwhen" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="https://www.linkedin.com/in/justin-nguyen-982030175/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </nav>
+  </footer>
+
+  <!-- floating back-to-top bubble -->
+  <button id="to-top" class="to-top" type="button" aria-label="Back to top" title="Back to top">
+    <span class="bubbles" aria-hidden="true"></span>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6M6.5 11.5 12 6l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <script src="assets/js/jellyfish.js?v=24"></script>
+  <script src="assets/js/typewriter.js?v=24"></script>
+  <script src="assets/js/aquarium.js?v=7"></script>
+  <script src="assets/js/totop.js?v=1"></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>

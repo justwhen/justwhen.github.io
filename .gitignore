@@ -1,0 +1,9 @@
+# local tooling
+.claude/
+
+# design scratch page (not part of the site)
+samples.html
+
+# OS clutter
+.DS_Store
+Thumbs.db
