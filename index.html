@@ -5,11 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Justin Nguyen | Immunology & Data Science</title>
   <meta name="description" content="Justin Nguyen, Ph.D. student at UTMB working at the intersection of immunology, vaccine research, and data science.">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="dark light">
+  <!-- pick the theme before anything paints: saved choice, else the visitor's system setting -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) {}
+      var q = new URLSearchParams(location.search).get('theme');
+      if (q === 'light' || q === 'dark') t = q;
+      if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=25">
+  <!-- fonts load without blocking the first paint; text shows in a system font until they arrive -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+  <link rel="stylesheet" href="assets/css/style.css?v=36">
 </head>
 <body>
   <header class="site-header">
@@ -33,6 +46,10 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="1.6"/><text x="12" y="16.2" text-anchor="middle" font-size="9.5" font-weight="700" font-family="Inter, sans-serif" fill="currentColor">in</text></svg>
         </a>
       </nav>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
     </div>
   </header>
 
@@ -100,7 +117,6 @@
           <p>Vaccine correlates of protection. I'm building a scalable single-cell multi-omics
           pipeline, validated in NHP vaccination models, to move toward human-relevant
           immune correlates of vaccine efficacy.</p>
-          <p class="scale" aria-hidden="true"><i></i>0 — 1 cell</p>
         </article>
         <article class="card">
           <p class="cat"><span>No. 01·B</span><span>in silico</span></p>
@@ -108,14 +124,12 @@
           <p>Machine learning and biostatistics on high-dimensional biological and clinical data,
           from single-cell transcriptomics to electronic health records, propensity score
           matching, and post-vaccination outcome prediction.</p>
-          <p class="scale" aria-hidden="true"><i></i>0 — 10⁶ records</p>
         </article>
         <article class="card">
           <p class="cat"><span>No. 01·C</span><span>San Antonio, TX</span></p>
           <h3>Immunology roots</h3>
           <p>Mucosal immunity and host–pathogen interaction: lymphotoxin β-receptor signaling and
           IFN-γ–driven intestinal pathology in <em>Campylobacter</em>-induced colitis.</p>
-          <p class="scale" aria-hidden="true"><i></i>0 — 1 mm</p>
         </article>
         <article class="card">
           <p class="cat"><span>No. 01·D</span><span>EHR cohorts</span></p>
@@ -123,7 +137,6 @@
           <p>Using EHR cohorts to ask epidemiological questions, like the relative risk of
           sudden sensorineural hearing loss after infectious disease, or reactions after
           yellow fever vaccination.</p>
-          <p class="scale" aria-hidden="true"><i></i>0 — 10⁶ patients</p>
         </article>
       </div>
     </section>
@@ -322,10 +335,11 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6M6.5 11.5 12 6l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
 
-  <script src="assets/js/jellyfish.js?v=25"></script>
-  <script src="assets/js/typewriter.js?v=25"></script>
-  <script src="assets/js/aquarium.js?v=7"></script>
+  <script src="assets/js/jellyfish.js?v=30"></script>
+  <script src="assets/js/typewriter.js?v=30"></script>
+  <script src="assets/js/aquarium.js?v=9"></script>
   <script src="assets/js/totop.js?v=1"></script>
+  <script src="assets/js/theme.js?v=1"></script>
   <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
 </body>
 </html>

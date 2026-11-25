@@ -16,7 +16,7 @@
  * Coordinates: x runs along the long front glass, y runs from the back glass (0)
  * to the front glass (D), z is height. P(x, y, z) projects to screen space.
  */
-(function () {
+function buildTank() {
   const mount = document.getElementById('tank');
   if (!mount) return;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -608,7 +608,8 @@
   if (reduce) placeFish(4, 1);
   else {
     let visible = true, last = performance.now();
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(mount);
+    // pause everything in the tank (fish, swaying plants, light rays) while it's off-screen
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; mount.classList.toggle('aq-paused', !visible); }).observe(mount);
     const loop = (now) => {
       requestAnimationFrame(loop);
       const dt = Math.min(0.1, (now - last) / 1000); last = now;
@@ -628,4 +629,16 @@
     el.addEventListener('focus', () => setHot(key, true));
     el.addEventListener('blur', () => setHot(key, false));
   });
+}
+
+// Build the tank only when it is about to scroll into view (it is ~5,000 SVG shapes),
+// so it never competes with the first paint of the hero.
+(function () {
+  const mount = document.getElementById('tank');
+  if (!mount) return;
+  if (!('IntersectionObserver' in window)) { buildTank(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); buildTank(); }
+  }, { rootMargin: '900px 0px' });
+  io.observe(mount);
 })();

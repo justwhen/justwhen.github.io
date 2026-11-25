@@ -21,6 +21,12 @@
   const GAP_MS = 120;          // blank pause before the next phrase
   const DECAY = '#Ox*+=~-:;,.'; // dense → sparse, then gone
 
+  // Easter eggs: now and then a dissolve briefly spells one of these (in l33t) inside the noise.
+  // Add or change words here; keep each shorter than the shortest phrase above.
+  const EGGS = ['mh', 'p0e2', 'l4sv', 'bl0ss*m', '1vy'];   // mh, poe, lasv, blossom, ivy
+  const EGG_CHANCE = 0.4;      // share of dissolves that hide an egg
+  const EGG_HOLD_MS = 320;     // how long the egg stays readable before it decays too
+
   el.textContent = PHRASES[0];
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -51,12 +57,30 @@
     // each glyph starts decaying at a random moment, left side slightly first
     const starts = glyphs.map((_, i) => (i / glyphs.length) * DISSOLVE_MS * 0.35 + Math.random() * DISSOLVE_MS * 0.3);
     const life = DISSOLVE_MS * 0.4;
+
+    // sometimes slot an egg into a run of glyphs: it flashes up in the noise, holds, then decays
+    const egg = {};
+    if (Math.random() < EGG_CHANCE) {
+      const word = EGGS[Math.floor(Math.random() * EGGS.length)];
+      if (word.length <= text.length) {
+        const at = Math.floor(Math.random() * (text.length - word.length + 1));
+        [...word].forEach((ch, k) => { egg[at + k] = ch; starts[at + k] = EGG_HOLD_MS + k * 18 + Math.random() * 40; });
+      }
+    }
+
     const t0 = performance.now();
     for (;;) {
       const t = performance.now() - t0;
       let alive = false;
       glyphs.forEach((s, i) => {
-        if (text[i] === ' ') return;
+        if (text[i] === ' ' && !(i in egg)) return;
+        if (i in egg && t < starts[i]) {                 // show the egg character until its own decay begins
+          alive = true;
+          s.classList.add('ascii-bit');
+          s.textContent = egg[i];
+          s.style.opacity = '1';
+          return;
+        }
         const p = (t - starts[i]) / life;
         if (p < 0) { alive = true; return; }
         if (p >= 1) { s.textContent = ' '; return; }
