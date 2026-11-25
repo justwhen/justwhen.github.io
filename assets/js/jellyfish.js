@@ -44,7 +44,8 @@
     lightPulse: 1.0,            // strength of the bioluminescent wave that runs down the ribs each stroke
     bodyRamp: ' .,:;-~=+*oxO#',
     glowRamp: ' .:+*oO@',
-    fps: 30,
+    // 24 fps reads as smooth for a slow drift; phones and low-core devices draw at 18 to save battery
+    fps: (window.matchMedia('(max-width: 640px)').matches || (navigator.hardwareConcurrency || 8) <= 4) ? 18 : 24,
   };
 
   const W = CONFIG.cols, H = CONFIG.rows, A = CONFIG.charAspect;

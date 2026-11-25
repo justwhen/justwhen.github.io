@@ -1,3 +1,9 @@
+/* fallback faces tuned to the web fonts' proportions, so the font swap doesn't move anything */
+@font-face { font-family: "Inter Fallback"; src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 107.6%; ascent-override: 90.2%; descent-override: 22.5%; line-gap-override: 0%; }
+@font-face { font-family: "JetBrains Mono Fallback"; src: local("Courier New"), local("Courier"), local("Liberation Mono");
+  size-adjust: 100%; ascent-override: 102%; descent-override: 30%; line-gap-override: 0%; }
+
 :root {
   color-scheme: dark;
   --bg: #0a131c;          /* deep night navy */
@@ -26,8 +32,8 @@
   --call-bg: #101d29; --call-edge: #263848; --call-text: #e6edf4; --call-hot-bg: #14253a;
   --call-halo: rgba(8, 15, 22, 0.45); --call-ring: #0a131c;
   --bubble-core: rgba(10, 19, 28, 0.88); --bubble-hover: #ffffff; --drop-rgb: 0, 0, 0;
-  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --sans: "Inter", "Inter Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", "JetBrains Mono Fallback", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --maxw: 1120px;
 }
 /* light theme: chosen by the toggle, or by the system setting before the page's script runs */
@@ -164,10 +170,10 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
   margin: 18px 0 28px;
   font-size: clamp(20px, 2.3vw, 28px); font-weight: 400; letter-spacing: -0.01em;
   color: var(--accent);
-  min-height: 1.4em;
+  height: 1.4em; line-height: 1.4em;
 }
 .typed.flash { animation: flash-in .35s ease-out; }
-.glyph { display: inline-block; text-align: center; white-space: pre; }
+.glyph { display: inline-block; text-align: center; white-space: pre; line-height: 1; vertical-align: baseline; }
 .glyph.ascii-bit {
   font-family: var(--mono); font-size: 0.8em;
   color: var(--glyph-bit);
@@ -206,8 +212,8 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 /* ── ascii jellyfish ── */
 .hero-art { margin: 0; display: flex; flex-direction: column; align-items: center; }
 /* two stacked layers: translucent body + glowing rib lines */
-.ascii-stack { display: grid; }
-.ascii-stack > pre { grid-area: 1 / 1; }
+.ascii-stack { display: grid; contain: layout paint style; }   /* redraws stay inside this box */
+.ascii-stack > pre { grid-area: 1 / 1; min-height: 70em; min-width: 50.4em; }
 .ascii {
   margin: 0;
   font-family: var(--mono);
@@ -410,6 +416,18 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
   100% { transform: translate(calc(-50% + var(--dx)), var(--dy)) scale(1); opacity: 0; }
 }
 
+/* ── skeleton placeholders: shown only while a piece hasn't drawn yet ── */
+@keyframes skel-shimmer { from { background-position: 120% 0; } to { background-position: -20% 0; } }
+.ascii-stack:has(> #jelly-body:empty),
+#tank:empty {
+  border-radius: 18px;
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(var(--edge-rgb), 0.07) 50%, transparent 70%) 0 0 / 220% 100% no-repeat,
+    rgba(var(--edge-rgb), 0.035);
+  animation: skel-shimmer 1.6s ease-in-out infinite;
+}
+.ascii-stack:has(> #jelly-body:empty) { border-radius: 48% 48% 26% 26% / 34% 34% 22% 22%; }   /* a soft dome, hinting at the jellyfish */
+
 /* ── responsive ── */
 @media (max-width: 900px) {
   .nav { gap: 20px; }
@@ -433,5 +451,5 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .caret { animation: none; }
-  .aq-sway, .aq-ray, .aq-ripple { animation: none; }
+  .aq-sway, .aq-ray, .aq-ripple, #tank:empty, .ascii-stack:has(> #jelly-body:empty) { animation: none; }
 }

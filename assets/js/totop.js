@@ -9,10 +9,16 @@
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const layer = btn.querySelector('.bubbles');
 
-  // show after scrolling past ~1.2 screens, so it's there for the bottom of the page
-  const onScroll = () => btn.classList.toggle('show', window.scrollY > window.innerHeight * 1.2);
+  // show after scrolling past ~1.2 screens, so it's there for the bottom of the page;
+  // the bubble trickle only runs while the button is showing
+  let timer = 0;
+  const onScroll = () => {
+    const show = window.scrollY > window.innerHeight * 1.2;
+    btn.classList.toggle('show', show);
+    if (show && !timer && !reduce) timer = setTimeout(trickle, 900);
+    if (!show && timer) { clearTimeout(timer); timer = 0; }
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
   function bubble(big) {
     if (reduce) return;
@@ -32,13 +38,12 @@
   let hovering = false;
   btn.addEventListener('mouseenter', () => { hovering = true; });
   btn.addEventListener('mouseleave', () => { hovering = false; });
-  let last = 0;
-  (function tick(now) {
-    requestAnimationFrame(tick);
-    if (!btn.classList.contains('show') || document.hidden) return;
-    const gap = hovering ? 160 : 900;
-    if (now - last > gap) { last = now; bubble(false); }
-  })(0);
+  // a slow timer (not every frame): one bubble per tick, quicker while hovered
+  function trickle() {
+    if (!document.hidden) bubble(false);
+    timer = btn.classList.contains('show') ? setTimeout(trickle, hovering ? 160 : 900) : 0;
+  }
+  onScroll();
 
   btn.addEventListener('click', () => {
     for (let k = 0; k < 12; k++) setTimeout(() => bubble(true), k * 35);
