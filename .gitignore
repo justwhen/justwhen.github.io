@@ -7,3 +7,6 @@ samples.html
 # OS clutter
 .DS_Store
 Thumbs.db
+
+# motion / style trial pages (not part of the site)
+samples/

@@ -213,7 +213,12 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 .hero-art { margin: 0; display: flex; flex-direction: column; align-items: center; }
 /* two stacked layers: translucent body + glowing rib lines */
 .ascii-stack { display: grid; contain: layout paint style; }   /* redraws stay inside this box */
-.ascii-stack > pre { grid-area: 1 / 1; min-height: 70em; min-width: 50.4em; }
+.ascii-stack > pre { grid-area: 1 / 1; min-height: 66em; min-width: 57.6em; }   /* 96 × 66 character grid */
+/* canvas styles (mosaic, dither, disco) draw over the same box; the text layers keep the size */
+.jelly-canvas { grid-area: 1 / 1; pointer-events: none; display: none; }
+.ascii-stack[data-style]:not([data-style="chars"]) .jelly-canvas,
+.ascii-stack[data-scramble] .jelly-canvas { display: block; }
+.ascii-stack[data-style]:not([data-style="chars"]) > pre { visibility: hidden; }
 .ascii {
   margin: 0;
   font-family: var(--mono);

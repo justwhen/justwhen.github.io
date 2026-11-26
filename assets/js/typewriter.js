@@ -42,6 +42,8 @@
   }
 
   async function dissolve(text) {
+    // the jellyfish changes style in step with each scramble (jelly-styles.js)
+    document.dispatchEvent(new CustomEvent('role-scramble', { detail: { duration: DISSOLVE_MS } }));
     // wrap each character in a span locked to its original width so nothing shifts
     el.textContent = '';
     const glyphs = [...text].map((ch) => {
