@@ -462,7 +462,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, summary:focus-v
 @media (max-width: 900px) {
   .nav { gap: 20px; }
   .hero { grid-template-columns: 1fr; padding-top: 40px; }
-  .hero-art { order: -1; }
+  .hero-art { margin-top: 8px; }   /* name and intro first, then the jellyfish */
   .ascii { font-size: clamp(5px, 1.55vw, 9px); }
   .cards, .skills { grid-template-columns: 1fr; }
 }
