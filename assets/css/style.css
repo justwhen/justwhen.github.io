@@ -347,18 +347,6 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 #tank svg { display: block; width: 100%; height: auto; overflow: visible; }
 #tank:empty { aspect-ratio: 1040 / 748; }   /* hold the tank's space until it is built */
 
-/* legend: only shown on small screens, where the callouts are hidden */
-.tank-legend { display: none; list-style: none; margin: 20px 0 0; padding: 0; }
-.tank-legend a {
-  display: grid; grid-template-columns: 32px 1fr; align-items: baseline;
-  padding: 7px 12px; margin: 0 -12px; border-radius: 8px;
-  font-size: 15px; color: var(--text);
-  transition: background .15s ease, color .15s ease;
-}
-.tank-legend .k { font-family: var(--mono); font-size: 11px; color: var(--faint); }
-.tank-legend em { grid-column: 2; font-style: normal; color: var(--muted); font-size: 12.5px; line-height: 1.3; }
-.tank-legend a.is-hot, .tank-legend a:hover { background: var(--bg-raised); color: var(--accent); }
-.tank-legend a.is-hot .k { color: var(--accent); }
 
 .aq-noev { pointer-events: none; }
 .aq-hot { cursor: pointer; }
@@ -366,7 +354,8 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 .aq-hot.is-hot .aq-feat { filter: brightness(1.18) drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.7)); }
 .aq-hot:focus, .aq-call:focus { outline: none; }
 
-/* callouts outside the tank */
+/* callouts outside the tank: side labels on wide screens, rows above and below on phones */
+#tank.aq-narrow .aq-calls-wide, #tank:not(.aq-narrow) .aq-calls-narrow { display: none; }
 .aq-call { cursor: pointer; }
 .aq-call .halo { stroke: var(--call-halo); stroke-width: 3; stroke-dasharray: 3 3; }
 .aq-call .lead { stroke: rgba(var(--accent-rgb), 0.8); stroke-width: 1.1; stroke-dasharray: 3 3; transition: stroke .15s ease; }
@@ -440,6 +429,12 @@ html:not(.js) .hero-art,
 html:not(.js) .tank-section { display: none; }
 .js .ascii-stack:has(> #jelly-body:empty) { border-radius: 48% 48% 26% 26% / 34% 34% 22% 22%; }   /* a soft dome, hinting at the jellyfish */
 
+/* light mode: the glass is drawn in white for the dark page; give it a slate edge here so the tank's outline shows */
+:root[data-theme="light"] .aq-glass { stroke: #4f6a80; stroke-opacity: .7; }
+:root[data-theme="light"] .aq-glass-dim { stroke-opacity: .4; }
+:root[data-theme="light"] .aq-glass-front { stroke: #3c5568; stroke-opacity: .9; }
+:root[data-theme="light"] .aq-surface { stroke: #3f8f9c; stroke-opacity: .75; }
+
 /* ── keyboard & touch ── */
 /* skip link: hidden until focused with Tab, then jumps past the header to the content */
 .skip-link {
@@ -473,8 +468,6 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible, summary:focus-v
   .to-top { right: 16px; bottom: 16px; width: 46px; height: 46px; }
   .timeline > li, .talks li { grid-template-columns: 1fr; gap: 6px; }
   .spec-tags { grid-template-columns: 1fr 1fr; gap: 16px 12px; }
-  .aq-call { display: none; }         /* callouts are too small on phones; the legend below is the menu */
-  .tank-legend { display: block; }
   .section-head { gap: 20px; }
   .social { gap: 18px; }
 }

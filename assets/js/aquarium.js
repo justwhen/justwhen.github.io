@@ -538,15 +538,15 @@ function buildTank() {
   out.push(poly([P(0, D, 0), P(L, D, 0), P(L, D, WL), P(0, D, WL)], 'fill="url(#aq-water-front)"'));
   out.push(poly([P(L, 0, 0), P(L, D, 0), P(L, D, WL), P(L, 0, WL)], 'fill="url(#aq-water-front)" opacity=".9"'));
   out.push(poly([P(0, 0, WL), P(L, 0, WL), P(L, D, WL), P(0, D, WL)], 'fill="#bff6ee" opacity=".10"'));
-  out.push(`<polyline class="aq-ripple" points="${pts([P(0, D, WL), P(L, D, WL), P(L, 0, WL)])}" fill="none" stroke="#d8fff9" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="14 6 3 6"/>`);
-  const dim = 'stroke="#dff4ff" stroke-opacity=".22" stroke-width="1"';
-  const bright = 'stroke="#e9f8ff" stroke-opacity=".6" stroke-width="1.3"';
+  out.push(`<polyline class="aq-ripple aq-glass aq-surface" points="${pts([P(0, D, WL), P(L, D, WL), P(L, 0, WL)])}" fill="none" stroke="#d8fff9" stroke-opacity=".6" stroke-width="1.2" stroke-dasharray="14 6 3 6"/>`);
+  const dim = 'stroke="#dff4ff" stroke-opacity=".22" stroke-width="1" class="aq-glass aq-glass-dim"';
+  const bright = 'stroke="#e9f8ff" stroke-opacity=".6" stroke-width="1.3" class="aq-glass"';
   out.push(line(P(0, 0, 0), P(0, 0, HT), dim));
   out.push(line(P(0, 0, HT), P(L, 0, HT), dim));
   out.push(line(P(0, 0, HT), P(0, D, HT), dim));
   out.push(line(P(L, 0, 0), P(L, 0, HT), bright));
   out.push(line(P(0, D, 0), P(0, D, HT), bright));
-  out.push(line(P(L, D, 0), P(L, D, HT), 'stroke="#f2fbff" stroke-opacity=".85" stroke-width="1.6"'));
+  out.push(line(P(L, D, 0), P(L, D, HT), 'stroke="#f2fbff" stroke-opacity=".85" stroke-width="1.6" class="aq-glass aq-glass-front"'));
   out.push(`<polyline points="${pts([P(0, D, HT), P(L, D, HT), P(L, 0, HT)])}" fill="none" ${bright}/>`);
   out.push(`<polyline points="${pts([P(0, D, 0), P(L, D, 0), P(L, 0, 0)])}" fill="none" ${bright}/>`);
   out.push(poly([P(1.2, D, HT - 0.3), P(2.0, D, HT - 0.3), P(4.6, D, 0.6), P(3.8, D, 0.6)], 'fill="#ffffff" opacity=".045"'));
@@ -563,6 +563,7 @@ function buildTank() {
 
   // ── callouts (outside the tank): one line each, leader runs straight in to the object ──
   const boxes = [];
+  out.push('<g class="aq-calls-wide">');
   for (const c of callouts) {
     const [ax, ay] = c.anchor, [bx, by] = c.at;
     const title = `${c.num}  ${c.name}`;
@@ -582,12 +583,70 @@ function buildTank() {
     </a>`);
   }
 
+  out.push('</g>');
+
   // ── assemble ──
   const corners = [P(0, 0, HT), P(L, 0, HT), P(L, D, -SH), P(0, D, -SH), P(0, D, HT), P(L, 0, -SH)];
   const xs = corners.map((p) => p[0]).concat(boxes.flatMap((b) => [b[0], b[2]]));
   const ys = corners.map((p) => p[1]).concat(boxes.flatMap((b) => [b[1], b[3]]));
   const minX = Math.min(...xs) - 12, maxX = Math.max(...xs) + 12, minY = Math.min(...ys) - 12, maxY = Math.max(...ys) + 26;
-  mount.innerHTML = `<svg viewBox="${n1(minX)} ${n1(minY)} ${n1(maxX - minX)} ${n1(maxY - minY)}" role="group" aria-label="Aquarium map of this page">${out.join('')}</svg>`;
+  const wideBox = `${n1(minX)} ${n1(minY)} ${n1(maxX - minX)} ${n1(maxY - minY)}`;
+
+  // ── phone callouts: the side labels would shrink to ~4 px, so on narrow screens three labels sit
+  //    above the tank and three below, sized to stay readable, each with a line to a dot on its object ──
+  const tx0 = Math.min(...corners.map((p) => p[0])), tx1 = Math.max(...corners.map((p) => p[0]));
+  const ty0 = Math.min(...corners.map((p) => p[1])), ty1 = Math.max(...corners.map((p) => p[1]));
+  const TW = tx1 - tx0, col = TW / 3;
+  let F = TW * 11.5 / 340;                                        // ≈ 11.5 px text on a phone-width tank
+  const label = (c) => `${c.num} ${c.name}`;
+  const wOf = (c, f) => label(c).length * 0.62 * f + f * 1.3;
+  const widest = Math.max(...callouts.map((c) => wOf(c, 1)));
+  F = Math.min(F, (col - 10) / widest);                         // three labels must fit side by side
+  const bh = F * 2.2, gapY = F * 2.4, dotR = F * 0.42;
+  const rowY = [ty0 - gapY - bh / 2, ty1 + gapY + bh / 2];
+  // choose which three labels go on top: try every split, keep the one whose leader lines are
+  // shortest and never cross (each row ordered left to right by its objects)
+  const slotX = (k) => tx0 + (k + 0.5) * col;
+  const cross = (p1, p2, p3, p4) => {
+    const d = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+    return d(p1, p2, p3) * d(p1, p2, p4) < 0 && d(p3, p4, p1) * d(p3, p4, p2) < 0;
+  };
+  let rows = null, best = Infinity;
+  for (let m = 0; m < 64; m++) {
+    const top = callouts.filter((_, i) => m >> i & 1);
+    if (top.length !== 3) continue;
+    const cand = [top, callouts.filter((_, i) => !(m >> i & 1))].map((r) => [...r].sort((a, b) => a.anchor[0] - b.anchor[0]));
+    const segs = cand.flatMap((r, ri) => r.map((c, k) => [[slotX(k), rowY[ri]], c.anchor]));
+    let cost = segs.reduce((sum, [a, b]) => sum + Math.hypot(a[0] - b[0], a[1] - b[1]), 0);
+    for (let i = 0; i < segs.length; i++) for (let j = i + 1; j < segs.length; j++) if (cross(...segs[i], ...segs[j])) cost += 1e5;
+    if (cost < best) { best = cost; rows = cand; }
+  }
+  let nar = '<g class="aq-calls-narrow">';
+  rows.forEach((row, ri) => row.forEach((c, k) => {
+    const bx = slotX(k), by = rowY[ri], w = wOf(c, F);
+    const [ax, ay] = c.anchor, ey = ri === 0 ? by + bh / 2 : by - bh / 2;
+    const sw = `stroke-width:${n1(F * 0.1)}`;
+    nar += `<a href="#${c.key}" class="aq-call" data-key="${c.key}" aria-label="${c.name}">
+      <line class="halo" style="stroke-width:${n1(F * 0.28)}" x1="${n1(bx)}" y1="${n1(ey)}" x2="${n1(ax)}" y2="${n1(ay)}"/>
+      <line class="lead" style="${sw}" x1="${n1(bx)}" y1="${n1(ey)}" x2="${n1(ax)}" y2="${n1(ay)}"/>
+      <circle style="${sw}" cx="${n1(ax)}" cy="${n1(ay)}" r="${n1(dotR)}"/>
+      <rect style="${sw}" x="${n1(bx - w / 2)}" y="${n1(by - bh / 2)}" width="${n1(w)}" height="${n1(bh)}" rx="${n1(F * 0.6)}"/>
+      <text class="t" style="font-size:${n1(F)}px" x="${n1(bx)}" y="${n1(by + F * 0.36)}" text-anchor="middle">${label(c)}</text>
+    </a>`;
+  }));
+  nar += '</g>';
+  out.push(nar);
+  const narrowBox = `${n1(tx0 - 8)} ${n1(rowY[0] - bh / 2 - 8)} ${n1(TW + 16)} ${n1(rowY[1] - rowY[0] + bh + 16)}`;
+
+  mount.innerHTML = `<svg viewBox="${wideBox}" role="group" aria-label="Aquarium map of this page">${out.join('')}</svg>`;
+  const svgEl = mount.firstElementChild;
+  const narrowMQ = window.matchMedia('(max-width: 640px)');
+  const applyLayout = () => {
+    mount.classList.toggle('aq-narrow', narrowMQ.matches);
+    svgEl.setAttribute('viewBox', narrowMQ.matches ? narrowBox : wideBox);
+  };
+  applyLayout();
+  if (narrowMQ.addEventListener) narrowMQ.addEventListener('change', applyLayout);
 
   // ── fish: swim a loop, always upright, turning around with a quick squash-flip ──
   const fishEls = Array.from(mount.querySelectorAll('.aq-fish'));

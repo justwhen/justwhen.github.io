@@ -133,37 +133,29 @@
     }
   }
 
-  // ── Disco: mirror-ball glitter tiles, a slow sweeping reflection and sparkles that twinkle ──
+  // ── Disco: tiles coloured on a heat-map scale (viridis, as in Scanpy): dim edges are deep purple,
+  //    the body runs through blue and teal, and the glowing core and rib lines run hot to yellow ──
+  const VIRIDIS = [[68, 1, 84], [72, 40, 120], [62, 74, 137], [49, 104, 142], [38, 130, 142],
+                   [31, 158, 137], [53, 183, 121], [110, 206, 88], [181, 222, 43], [253, 231, 37]];
+  function heat(v) {
+    const x = Math.max(0, Math.min(0.999, v)) * (VIRIDIS.length - 1), i = Math.floor(x), k = x - i;
+    return mix(VIRIDIS[i], VIRIDIS[i + 1], k);
+  }
   function disco(sample, g, p) {
     const q = 0.85, nc = Math.floor(g.PW / q), nr = Math.floor(g.H / q), cw = Wpx / nc, ch = Hpx / nr, gap = Math.max(1, cw * 0.16);
-    const t = g.t, light = document.documentElement.getAttribute('data-theme') === 'light';
-    const flares = [];
     for (let r = 0; r < nr; r++) {
       for (let c = 0; c < nc; c++) {
-        const [b, gl, sc] = sample((c + 0.5) * q, (r + 0.5) * q);
-        const v = Math.min(1, b * 1.1 + gl * 0.6);
-        if (v < 0.06 && sc < 0.06) continue;
-        const n = noise(c, r), n2 = noise(r + 17, c + 5);
-        // each mirror tile faces a slightly different way: its own hue and its own glint timing
-        const hue = (200 + 120 * n + 40 * Math.sin(t * 0.4 + c * 0.08 - r * 0.05)) % 360;
-        const sweep = Math.max(0, Math.sin((c - r) * 0.12 - t * 1.6)) ** 6;      // reflection band crossing the bell
-        const glint = Math.max(0, Math.sin(t * (1.5 + 2 * n2) + n * 40)) ** 24;  // individual tile twinkles
-        const lightness = light ? 62 - 30 * v - 10 * sweep : 22 + 48 * v + 22 * sweep;
-        ctx.fillStyle = v < 0.06 ? css(p.gold, 0.6) : `hsl(${hue.toFixed(0)},${(55 + 25 * n2).toFixed(0)}%,${lightness.toFixed(0)}%)`;
-        ctx.fillRect(c * cw + gap / 2, r * ch + gap / 2, cw - gap, ch - gap);
-        if (v > 0.3 && glint > 0.35) {
-          ctx.fillStyle = light ? `rgba(255,255,255,${glint})` : `rgba(255,255,255,${0.85 * glint})`;
-          ctx.fillRect(c * cw + gap / 2, r * ch + gap / 2, cw - gap, ch - gap);
-          if (glint > 0.9 && n2 > 0.75) flares.push([c * cw + cw / 2, r * ch + ch / 2, glint]);
+        const [b, gl, sc, au] = sample((c + 0.5) * q, (r + 0.5) * q);
+        const core = Math.max(0, (au - 0.4) * 1.6);
+        const v = Math.min(1, b * 0.95 + gl * 0.6 + core * 1.1);
+        if (v < 0.06) {
+          if (sc > 0.06) { ctx.fillStyle = css(heat(0.15), 0.7); ctx.fillRect(c * cw + gap / 2, r * ch + gap / 2, cw - gap, ch - gap); }
+          continue;
         }
+        const jitter = (noise(c, r) - 0.5) * 0.08;               // neighbouring tiles differ a little, like real data
+        ctx.fillStyle = css(heat(0.12 + 0.88 * v + jitter));
+        ctx.fillRect(c * cw + gap / 2, r * ch + gap / 2, cw - gap, ch - gap);
       }
-    }
-    // small lens-flare stars on the brightest glints
-    ctx.strokeStyle = light ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.8)';
-    ctx.lineWidth = 1;
-    for (const [x, y, k] of flares) {
-      const L = cw * 2.2 * k;
-      ctx.beginPath(); ctx.moveTo(x - L, y); ctx.lineTo(x + L, y); ctx.moveTo(x, y - L); ctx.lineTo(x, y + L); ctx.stroke();
     }
   }
 
