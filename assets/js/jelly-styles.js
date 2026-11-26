@@ -20,33 +20,30 @@
   const ORDER = ['mosaic', 'dither', 'disco', 'chars'];
   let mode = 'mosaic';
   try { const q = new URLSearchParams(location.search).get('style'); if (ORDER.includes(q)) mode = q; } catch (e) {}
-  function setMode(m) { mode = m; stack.dataset.style = m; window.JELLY_TEXT = m === 'chars'; }   // hidden text layers skip their per-frame rebuild
+  const pres = Array.from(stack.querySelectorAll('pre'));
+  function setMode(m) { mode = m; stack.dataset.style = m; }
   setMode(mode);
+  window.JELLY_TEXT = mode === 'chars';                 // hidden text layers skip their per-frame rebuild
 
-  // while switching, the jelly breaks into the same decaying characters as the text, then settles
-  const DECAY = '#Ox*+=~-:;,.';
-  let scr0 = 0, scrDur = 0;
-  document.addEventListener('role-scramble', (e) => {
+  // Switching is a soft crossfade: the outgoing style dissolves out while the incoming one dissolves in,
+  // both redrawn every frame from the same simulation (so neither shows a stale, out-of-place frame).
+  const FADE_MS = 1100;
+  let from = null, f0 = 0;
+  const ease = (x) => x * x * (3 - 2 * x);
+  document.addEventListener('role-scramble', () => {
+    if (from !== null) return;                          // let a running fade finish first
+    from = mode;
     setMode(ORDER[(ORDER.indexOf(mode) + 1) % ORDER.length]);
-    scr0 = performance.now(); scrDur = ((e.detail && e.detail.duration) || 420) * 1.5;
-    stack.dataset.scramble = '1';
-    setTimeout(() => { delete stack.dataset.scramble; }, scrDur + 30);
+    f0 = performance.now();
+    window.JELLY_TEXT = from === 'chars' || mode === 'chars';
+    stack.dataset.fading = '1';
+    pres.forEach((el) => { el.style.opacity = from === 'chars' ? '1' : '0'; });
   });
-  function scrambleOverlay(sample, g, p, k) {
-    const q = 0.95, nc = Math.floor(g.PW / q), nr = Math.floor(g.H / q), cw = Wpx / nc, ch = Hpx / nr;
-    ctx.font = `600 ${(ch * 1.05).toFixed(1)}px ui-monospace, "JetBrains Mono", monospace`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    for (let r = 0; r < nr; r++) {
-      for (let c = 0; c < nc; c++) {
-        const [b, gl] = sample((c + 0.5) * q, (r + 0.5) * q);
-        if (b + gl < 0.08) continue;
-        const local = k + (noise(c, r) - 0.5) * 0.5;               // cells settle at slightly different moments
-        if (local >= 1 || Math.random() > 0.85 * (1 - Math.max(0, local))) continue;
-        const idx = Math.min(DECAY.length - 1, Math.floor(Math.max(0, local) * DECAY.length + Math.random() * 2));
-        ctx.fillStyle = css(p.glow, 0.95 * (1 - Math.max(0, local) * 0.6));
-        ctx.fillText(DECAY[idx], c * cw + cw / 2, r * ch + ch / 2);
-      }
-    }
+  function endFade() {
+    from = null;
+    delete stack.dataset.fading;
+    pres.forEach((el) => { el.style.opacity = ''; });
+    window.JELLY_TEXT = mode === 'chars';
   }
 
   // palettes follow the site theme (dark: moonlit lavender; light: deep sea blues)
@@ -161,13 +158,18 @@
 
   const RENDER = { dither, mosaic, disco };
   window.JELLY_TAP = function (sample, g) {
-    const fn = RENDER[mode];
-    const k = scrDur ? (performance.now() - scr0) / scrDur : 1;
-    if (!fn && k >= 1) return;                       // plain characters: the text layers draw it
+    const k = from === null ? 1 : Math.min(1, (performance.now() - f0) / FADE_MS);
+    if (from === null && !RENDER[mode]) return;      // plain characters: the text layers draw it
     fit();
     ctx.clearRect(0, 0, Wpx, Hpx);
-    const p = theme();
-    if (fn) fn(sample, g, p);
-    if (k < 1) scrambleOverlay(sample, g, p, k);
+    const p = theme(), e = ease(k);
+    if (from !== null && RENDER[from]) { ctx.globalAlpha = 1 - e; RENDER[from](sample, g, p); }
+    if (RENDER[mode]) { ctx.globalAlpha = from === null ? 1 : e; RENDER[mode](sample, g, p); }
+    ctx.globalAlpha = 1;
+    if (from !== null) {
+      const op = (from === 'chars' ? 1 - e : 0) + (mode === 'chars' ? e : 0);
+      pres.forEach((el) => { el.style.opacity = op.toFixed(3); });
+      if (k >= 1) endFade();
+    }
   };
 })();

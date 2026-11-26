@@ -217,8 +217,8 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 /* canvas styles (mosaic, dither, disco) draw over the same box; the text layers keep the size */
 .jelly-canvas { grid-area: 1 / 1; pointer-events: none; display: none; }
 .ascii-stack[data-style]:not([data-style="chars"]) .jelly-canvas,
-.ascii-stack[data-scramble] .jelly-canvas { display: block; }
-.ascii-stack[data-style]:not([data-style="chars"]) > pre { visibility: hidden; }
+.ascii-stack[data-fading] .jelly-canvas { display: block; }
+.ascii-stack[data-style]:not([data-style="chars"]):not([data-fading]) > pre { visibility: hidden; }
 .ascii {
   margin: 0;
   font-family: var(--mono);
