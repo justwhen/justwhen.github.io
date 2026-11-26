@@ -6,6 +6,18 @@
   <title>Justin Nguyen | Immunology & Data Science</title>
   <meta name="description" content="Justin Nguyen, Ph.D. student at UTMB working at the intersection of immunology, vaccine research, and data science.">
   <meta name="color-scheme" content="dark light">
+  <!-- browser toolbar colour on phones follows the theme -->
+  <meta name="theme-color" content="#0a131c" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f3f6f9" media="(prefers-color-scheme: light)">
+  <link rel="canonical" href="https://justwhen.github.io/">
+  <!-- link previews (Slack, LinkedIn, iMessage, X) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://justwhen.github.io/">
+  <meta property="og:title" content="Justin Nguyen | Immunology & Data Science">
+  <meta property="og:description" content="Ph.D. student at UTMB working at the intersection of immunology, vaccine research, and data science.">
+  <meta name="twitter:card" content="summary">
+  <!-- inline icon: no extra request (and no 404 for /favicon.ico) -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a131c'/%3E%3Cpath d='M6 17c0-6 4.5-10 10-10s10 4 10 10c-2.2-1-3.6-1-5 0-1.6-1-3.4-1-5 0-1.6-1-3.4-1-5 0-1.4-1-2.8-1-5 0z' fill='%23a9c6f5'/%3E%3Ccircle cx='16' cy='13' r='2.6' fill='%23f4c977'/%3E%3Cpath d='M11 19v6M16 19v7M21 19v6' stroke='%238af2ff' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E">
   <!-- pick the theme before anything paints: saved choice, else the visitor's system setting -->
   <script>
     (function () {
@@ -15,6 +27,7 @@
       if (q === 'light' || q === 'dark') t = q;
       if (t !== 'light' && t !== 'dark') t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', t);
+      document.documentElement.classList.add('js');   // scripts can run: loading placeholders are worth showing
     })();
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,9 +35,10 @@
   <!-- fonts load without blocking the first paint; text shows in a system font until they arrive -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
-  <link rel="stylesheet" href="assets/css/style.css?v=39">
+  <link rel="stylesheet" href="assets/css/style.css?v=40">
 </head>
 <body>
+  <a class="skip-link" href="#top">Skip to content</a>
   <header class="site-header">
     <div class="wrap header-inner">
       <a class="brand" href="#top">Justin Nguyen</a>
@@ -53,7 +67,7 @@
     </div>
   </header>
 
-  <main id="top">
+  <main id="top" tabindex="-1">
     <!-- ───────────────────────── HERO ───────────────────────── -->
     <section class="hero wrap">
       <div class="hero-text">
@@ -70,7 +84,7 @@
           data with a bench background in immunology to uncover new insights into immunity.
         </p>
         <div class="hero-actions">
-          <a class="btn" href="assets/Justin_Nguyen_CV.pdf" target="_blank" rel="noopener">Download CV <span aria-hidden="true">↗</span></a>
+          <a class="btn" href="assets/Justin_Nguyen_CV.pdf" target="_blank" rel="noopener" title="PDF, 223 KB · opens in a new tab" aria-label="Download CV (PDF, 223 KB, opens in a new tab)">Download CV <span aria-hidden="true">↗</span></a>
           <a class="btn btn-ghost" href="#contact">Get in touch</a>
         </div>
       </div>
@@ -335,8 +349,8 @@
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18V6M6.5 11.5 12 6l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
 
-  <script src="assets/js/jelly-styles.js?v=1"></script>
-  <script src="assets/js/jellyfish.js?v=32"></script>
+  <script src="assets/js/jelly-styles.js?v=2"></script>
+  <script src="assets/js/jellyfish.js?v=33"></script>
   <script src="assets/js/typewriter.js?v=31"></script>
   <script src="assets/js/aquarium.js?v=9"></script>
   <script src="assets/js/totop.js?v=2"></script>

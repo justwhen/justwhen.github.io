@@ -423,15 +423,40 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 
 /* ── skeleton placeholders: shown only while a piece hasn't drawn yet ── */
 @keyframes skel-shimmer { from { background-position: 120% 0; } to { background-position: -20% 0; } }
-.ascii-stack:has(> #jelly-body:empty),
-#tank:empty {
+/* only when scripts can run (html.js) — otherwise there is nothing coming to fill them.
+   The shimmer stops after ~13 s, so a stalled or failed load settles into a calm placeholder
+   instead of pulsing forever. */
+.js .ascii-stack:has(> #jelly-body:empty),
+.js #tank:empty {
   border-radius: 18px;
   background:
     linear-gradient(100deg, transparent 30%, rgba(var(--edge-rgb), 0.07) 50%, transparent 70%) 0 0 / 220% 100% no-repeat,
     rgba(var(--edge-rgb), 0.035);
-  animation: skel-shimmer 1.6s ease-in-out infinite;
+  animation: skel-shimmer 1.6s ease-in-out 8;
 }
-.ascii-stack:has(> #jelly-body:empty) { border-radius: 48% 48% 26% 26% / 34% 34% 22% 22%; }   /* a soft dome, hinting at the jellyfish */
+/* no scripts at all: drop the purely decorative jellyfish and the interactive map, rather than
+   leave large empty boxes; the text and every link still work */
+html:not(.js) .hero-art,
+html:not(.js) .tank-section { display: none; }
+.js .ascii-stack:has(> #jelly-body:empty) { border-radius: 48% 48% 26% 26% / 34% 34% 22% 22%; }   /* a soft dome, hinting at the jellyfish */
+
+/* ── keyboard & touch ── */
+/* skip link: hidden until focused with Tab, then jumps past the header to the content */
+.skip-link {
+  position: absolute; left: 16px; top: -100px; z-index: 100;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--accent); color: var(--bg); font-weight: 600; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+main:focus { outline: none; }
+/* a clear focus ring on everything you can reach with the keyboard (mouse clicks don't show it) */
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px;
+}
+/* on touch screens, give the small header icons a 44 px tap area (the recommended minimum) */
+@media (pointer: coarse) {
+  .profiles a, .theme-toggle { width: 44px; height: 44px; }
+}
 
 /* ── responsive ── */
 @media (max-width: 900px) {
@@ -456,5 +481,5 @@ h1, h2, h3 { font-weight: 500; margin: 0; letter-spacing: -0.01em; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .caret { animation: none; }
-  .aq-sway, .aq-ray, .aq-ripple, #tank:empty, .ascii-stack:has(> #jelly-body:empty) { animation: none; }
+  .aq-sway, .aq-ray, .aq-ripple, .js #tank:empty, .js .ascii-stack:has(> #jelly-body:empty) { animation: none; }
 }

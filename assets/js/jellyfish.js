@@ -415,8 +415,11 @@
     // like the filming camera, the view follows the bell (most of its sway and surge is taken out)
     const fx = LX + 0.85 * (st.cx - LX), fy = PLY + 0.85 * (st.cy - (LY - 10)) + 0.3 * (st.b - B0);
     drawStreaks(t);
+    // the text layers are only rebuilt while they're the visible style (a canvas style hides them),
+    // and always for the first frame so the box is never empty
+    const text = window.JELLY_TEXT !== false || !bodyEl.firstChild;
     let bs = '', gs = '', ys = '';
-    for (let j = 0; j < H; j++) {
+    if (text) for (let j = 0; j < H; j++) {
       const ry = j + 0.5 - (OY + camY);
       for (let i = 0; i < W; i++) {
         const rx = (i + 0.5) * A - (OX + camX);
@@ -454,6 +457,7 @@
       };
       window.JELLY_TAP(sample, { PW, H, t, flash: +glowEl.style.getPropertyValue("--ga") || 0.5 });
     }
+    if (!text) return;
     bodyEl.textContent = bs;
     glowEl.textContent = gs;
     if (goldEl) goldEl.textContent = ys;

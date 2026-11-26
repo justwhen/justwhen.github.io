@@ -20,7 +20,7 @@
   const ORDER = ['mosaic', 'dither', 'disco', 'chars'];
   let mode = 'mosaic';
   try { const q = new URLSearchParams(location.search).get('style'); if (ORDER.includes(q)) mode = q; } catch (e) {}
-  function setMode(m) { mode = m; stack.dataset.style = m; }
+  function setMode(m) { mode = m; stack.dataset.style = m; window.JELLY_TEXT = m === 'chars'; }   // hidden text layers skip their per-frame rebuild
   setMode(mode);
 
   // while switching, the jelly breaks into the same decaying characters as the text, then settles
